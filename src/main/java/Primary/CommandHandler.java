@@ -1,7 +1,6 @@
 package Primary;
-
+import discord4j.common.util.Snowflake;
 import discord4j.core.object.entity.Message;
-
 import java.util.Objects;
 
 public class CommandHandler extends Pikaboyny{
@@ -64,22 +63,34 @@ public class CommandHandler extends Pikaboyny{
     }
 
     /**
-     * Checks to confirm the this is in fact, the owner of the Guild.
+     * Checks to confirm that this is in fact, the owner of the Guild.
      * @param message
      * @return
      */
     public static boolean checkGuildOwnership(Message message){
         try {
-            message.getGuild().block().getOwnerId().equals(message.getAuthor().get().getId());
-            return true;
+            return (Objects.requireNonNull(message.getGuild().block()).getOwnerId().equals(message.getAuthor().get().getId()));
         }
         catch (NullPointerException e){
-            message.getChannel().block().createMessage("Guild ownership check failed. Check your code.").block();
+            Objects.requireNonNull(message.getChannel().block()).createMessage("Guild ownership check failed. Check your code.").block();
 
 
         }
         return false;
     }
 
+    /**
+     * Checks to confirm that this is in fact, Mooismyusername (custom command for moousey).
+     * @param msg
+     * @return
+     */
+    public static boolean mooCheck (Message msg){
+        try {
+            return (msg.getAuthor().get().getId().equals(Snowflake.of("185756266621173760")));
+        }catch (Exception e){
+            Objects.requireNonNull(msg.getChannel().block()).createMessage("Moousey check failed. Check your code.").block();
+        }
+        return false;
+    }
 
 }
