@@ -1,6 +1,6 @@
 # Default ignored files
 /shelf/
 /.idea/workspace.xml
-../src/main/java/*.class
+/src/main/java/*.class
 /*.xml
-../target/
+/target/
