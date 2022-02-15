@@ -1,6 +1,9 @@
 package Primary;
 import discord4j.common.util.Snowflake;
 import discord4j.core.object.entity.Message;
+import discord4j.rest.util.Permission;
+
+import java.security.Permissions;
 import java.util.Objects;
 
 public class CommandHandler extends Pikaboyny{
@@ -76,6 +79,22 @@ public class CommandHandler extends Pikaboyny{
 
 
         }
+        return false;
+    }
+
+    public static boolean checkAdminStatus(Message message){
+        try {
+            return ((message.getAuthorAsMember().block().getRoles().blockFirst().getPermissions().contains(Permission.ADMINISTRATOR)));
+        } catch (NullPointerException e){
+            return false;
+        }
+        //Catch All for any undesired intentions.
+        catch (Exception e){
+            e.printStackTrace();
+            Objects.requireNonNull(message.getChannel().block()).createMessage("Guild admin check failed. Check your code.").block();
+
+        }
+
         return false;
     }
 

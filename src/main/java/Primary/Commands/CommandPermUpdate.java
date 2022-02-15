@@ -3,6 +3,7 @@ import discord4j.common.util.Snowflake;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.channel.Channel;
+import discord4j.core.object.entity.channel.VoiceChannel;
 import discord4j.discordjson.json.PermissionsEditRequest;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -12,12 +13,12 @@ import java.util.Objects;
  */
 public class CommandPermUpdate {
 
-    public static void memberAddToChannel (Message msg, GatewayDiscordClient client){
-        memberAddToChannel(msg, client, false);
+    public static void memberAddToTextchannel(Message msg, GatewayDiscordClient client){
+        memberAddToTextchannel(msg, client, false);
     }
 
-    public static void memberAddToChannel (Message msg, GatewayDiscordClient client, boolean isMoo) {
-        if (!Primary.CommandHandler.checkGuildOwnership(msg)){
+    public static void memberAddToTextchannel(Message msg, GatewayDiscordClient client, boolean isMoo) {
+        if (!Primary.CommandHandler.checkGuildOwnership(msg) && !Primary.CommandHandler.checkAdminStatus(msg)){
             Objects.requireNonNull(msg.getChannel().block()).createMessage("You're not allowed to invoke this command. Get lost you fuckin twat.").block();
         }
         else {
@@ -43,6 +44,7 @@ public class CommandPermUpdate {
                     //This is the case where the Channels ARE NOT the ones listed.
                     else {
                         Channel chn = msg.getClient().getChannelById(Snowflake.of(channel)).block();
+                        assert chn != null;
                         if (chn.getType().equals(Channel.Type.GUILD_TEXT)){
                             chn.getRestChannel().editChannelPermissions(user.getId(), PermissionsEditRequest.builder().deny(3148800).allow(0).type(1).build(), "Invoked by ".concat(msg.getAuthor().get().getUsername())).block();
                         }
