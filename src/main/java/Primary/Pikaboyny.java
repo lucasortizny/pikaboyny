@@ -17,7 +17,7 @@ public class Pikaboyny{
     //The word "none" is used for denoting empty field.
     public static void main(String[] args){
 
-        token = "OTE3NjA5NDczNzY0MzYwMjkz.Ya7Mag.k7KdkqMF9HCrndt8EIPl1nuGCII"; //Defaulted, I need to do something about this
+        token = ""; //Defaulted, I need to do something about this
         if (args.length == 4) {
             token = args[2];
             predeterminedprefix = args[3];
