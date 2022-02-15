@@ -16,7 +16,9 @@ public class CommandPermUpdate {
     public static void memberAddToTextchannel(Message msg, GatewayDiscordClient client){
         memberAddToTextchannel(msg, client, false);
     }
+    public static void memberAddToVoicechannel(Message msg, GatewayDiscordClient client, boolean isMoo){
 
+    }
     public static void memberAddToTextchannel(Message msg, GatewayDiscordClient client, boolean isMoo) {
         if (!Primary.CommandHandler.checkGuildOwnership(msg) && !Primary.CommandHandler.checkAdminStatus(msg)){
             Objects.requireNonNull(msg.getChannel().block()).createMessage("You're not allowed to invoke this command. Get lost you fuckin twat.").block();
