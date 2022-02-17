@@ -17,11 +17,8 @@ public class Pikaboyny{
     //The word "none" is used for denoting empty field.
     public static void main(String[] args){
 
-        token = ""; //Defaulted, I need to do something about this
-        if (args.length == 4) {
-            token = args[2];
-            predeterminedprefix = args[3];
-        }
+        token = ""; //Defaulted, I need to do something about this, rewrite this for a prompt to grab token from txt
+
         DiscordClient client = DiscordClient.create(token);
         GatewayDiscordClient gateway = client.login().block();
         handlemsg = new MessageHandler();
