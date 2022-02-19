@@ -40,9 +40,11 @@ public class CommandPermUpdate {
         if (!Primary.CommandHandler.checkGuildOwnership(msg) && !Primary.CommandHandler.checkAdminStatus(msg)){
 
             curchn.createMessage("You're not allowed to invoke this command.").subscribe();
+            msg.getRestMessage().createReaction("\u274e").subscribe();
         }
         else if (isMoo){
             curchn.createMessage("Hewwo moousey, you're not allowed to invoke this command. You must use your servfur account.~").subscribe();
+            msg.getRestMessage().createReaction("\u274e").subscribe();
         }
         else {
             //Currently reads all user mentions of a message.
@@ -73,6 +75,7 @@ public class CommandPermUpdate {
                         }
                     }
                 });
+                msg.getRestMessage().createReaction("✅").subscribe();
 
             });
 
