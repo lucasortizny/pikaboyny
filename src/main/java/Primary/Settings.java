@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.HashMap;
 
 /**
@@ -12,14 +13,20 @@ import java.util.HashMap;
  * Most likely will use another library like Gson.
  */
 public class Settings {
-    private String token;
-    private String devToken;
-    private String ownerID;
-    private boolean developmentEnvironment = false;
-    private HashMap<String, VoiceChannelDT> vchm;
-    private static final String FILEPATH = "./settings.json";
+    protected String token = "";
+    protected String devToken = "";
+    protected String ownerID = "";
+    protected String predeterminedprefix = "!";
+    protected boolean developmentEnvironment = false;
+    protected HashMap<String, VoiceChannelDT> vchm;
+    protected static final String FILEPATH = "./settings.json";
 
-
+    public String getPredeterminedprefix() {
+        return predeterminedprefix;
+    }
+    public void setPredeterminedprefix(String predeterminedprefix) {
+        this.predeterminedprefix = predeterminedprefix;
+    }
     public void setOwnerID(String ownerID) {
         this.ownerID = ownerID;
     }
@@ -49,13 +56,14 @@ public class Settings {
             if (file.exists()){
                 return gson.fromJson(new FileReader(file), Settings.class);
             }
+            return createSettings(gson);
         } catch (Exception e){
             //File Failed to be Read, redo settings.
             e.printStackTrace();
             System.out.println("File is corrupted/doesn't exist. Attempting to create new Settings...");
             return createSettings(gson);
         }
-        return null;
+
     }
     public static Settings createSettings(Gson gson){
         File newfile = new File(FILEPATH);
@@ -64,7 +72,13 @@ public class Settings {
                 newfile.delete();
                 newfile.createNewFile();
             }
-            gson.toJson(new Settings(), Settings.class);
+            String towrite = gson.toJson(new Settings(), Settings.class);
+            FileWriter fw = new FileWriter(FILEPATH);
+            fw.write(towrite);
+            fw.flush();
+            fw.close();
+
+
             return gson.fromJson(new FileReader(FILEPATH), Settings.class);
         } catch (Exception e){
                 e.printStackTrace();

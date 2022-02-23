@@ -1,36 +1,35 @@
 package Primary;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import discord4j.core.DiscordClient;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Message;
+
+import java.io.File;
 
 /**
  * NOTE TO SELF: Eventually, there is going to be a need to transition to an asynchronized style of coding this...
  */
 public class Pikaboyny{
     protected static CommandHandler handlecmd;
-    protected static String token;
-    protected static String predeterminedprefix = "!";
     protected static MessageHandler handlemsg;
-    //javac ProgramName token prefix
-    //The word "none" is used for denoting empty field.
+    protected static Settings configuration;
     public static void main(String[] args){
-
-        token = ""; //Defaulted, I need to do something about this
-        if (args.length == 4) {
-            token = args[2];
-            predeterminedprefix = args[3];
-        }
-        DiscordClient client = DiscordClient.create(token);
+        GsonBuilder gsonbuilder = new GsonBuilder();
+        gsonbuilder.setPrettyPrinting();
+        Gson gson = gsonbuilder.create();
+        configuration = Settings.importSettings(new File(Settings.FILEPATH), gson);
+        //This is not going to produce NullPointerException because of System.exit() call.
+        DiscordClient client = DiscordClient.create(configuration.getToken());
         GatewayDiscordClient gateway = client.login().block();
         handlemsg = new MessageHandler();
-        handlecmd = new CommandHandler(predeterminedprefix);
+        handlecmd = new CommandHandler(configuration.getPredeterminedprefix());
 
 
         gateway.on(MessageCreateEvent.class).subscribe(event -> {
             Message message = event.getMessage();
-            //System.out.println(message.);
             try{
                 handlemsg.handleMessage(message);
             } catch (Exception e){
