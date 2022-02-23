@@ -16,13 +16,20 @@ public class Pikaboyny{
     protected static CommandHandler handlecmd;
     protected static MessageHandler handlemsg;
     protected static Settings configuration;
+    public static Gson gson;
     public static void main(String[] args){
+        DiscordClient client;
         GsonBuilder gsonbuilder = new GsonBuilder();
         gsonbuilder.setPrettyPrinting();
-        Gson gson = gsonbuilder.create();
+        gson = gsonbuilder.create();
         configuration = Settings.importSettings(new File(Settings.FILEPATH), gson);
         //This is not going to produce NullPointerException because of System.exit() call.
-        DiscordClient client = DiscordClient.create(configuration.getToken());
+        if(configuration.isDevelopmentEnvironment()){
+            client = DiscordClient.create(configuration.getDevToken());
+        } else {
+            client = DiscordClient.create(configuration.getToken());
+        }
+
         GatewayDiscordClient gateway = client.login().block();
         handlemsg = new MessageHandler();
         handlecmd = new CommandHandler(configuration.getPredeterminedprefix());

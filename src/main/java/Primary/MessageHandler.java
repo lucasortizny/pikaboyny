@@ -11,12 +11,12 @@ public class MessageHandler extends Pikaboyny{
 
     public void handleMessage(Message msg){
         boolean prefixvalid = false;
-        prefixvalid = msg.getContent().substring(0,1).equals(predeterminedprefix);
+        prefixvalid = msg.getContent().substring(0,1).equals(Pikaboyny.configuration.getPredeterminedprefix());
         String[] messagesplit = msg.getContent().split(" ");
         if (prefixvalid){
             try {
                 switch(messagesplit[0].substring(1)){
-                    case "shutdown" -> CommandShutdown.execute(msg, Pikaboyny.handlecmd);
+                    case "shutdown" -> CommandShutdown.execute(msg, Pikaboyny.handlecmd, configuration);
                     case "tallow" -> CommandPermUpdate.memberAddToTextchannel(msg, msg.getClient());
 
                 }}catch(Exception e){

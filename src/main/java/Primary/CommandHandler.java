@@ -15,8 +15,8 @@ public class CommandHandler extends Pikaboyny{
      * Default Assignment
      */
     public CommandHandler(){
-        this.prefix = super.predeterminedprefix;
-        this.ownerID = "100903082652602368";
+        this.prefix = Pikaboyny.configuration.getPredeterminedprefix();
+        this.ownerID = Pikaboyny.configuration.getOwnerID();
 
     }
 

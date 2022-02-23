@@ -87,5 +87,19 @@ public class Settings {
         }
         return null;
     }
+    public static boolean saveSettings(Gson gson, Settings config){
+        try{
+            FileWriter fw = new FileWriter(new File(FILEPATH));
+            String towrite = gson.toJson(config, Settings.class);
+            fw.write(towrite);
+            fw.flush();
+            fw.close();
+            return true;
+
+        } catch (Exception e){
+            System.out.println("Unable to save configuration. Please check file permissions. Skipping...");
+            return false;
+        }
+    }
 
 }
