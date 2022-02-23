@@ -18,6 +18,7 @@ public class Pikaboyny{
     protected static Settings configuration;
     public static Gson gson;
     public static void main(String[] args){
+
         DiscordClient client;
         GsonBuilder gsonbuilder = new GsonBuilder();
         gsonbuilder.setPrettyPrinting();
