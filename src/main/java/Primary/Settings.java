@@ -9,8 +9,7 @@ import java.io.FileWriter;
 import java.util.HashMap;
 
 /**
- * This is going to be the setup for the future settings export as a Json serializable/deserializable file. More to come.
- * Most likely will use another library like Gson.
+ * This is going to be the Primary Settings Configuration
  */
 public class Settings {
     protected String token = "";
@@ -19,6 +18,7 @@ public class Settings {
     protected String predeterminedprefix = "!";
     protected boolean developmentEnvironment = false;
     protected HashMap<String, VoiceChannelDT> vchm;
+    protected MooOptions mooOptions = new MooOptions();
     protected static final String FILEPATH = "./settings.json";
 
     public String getPredeterminedprefix() {
@@ -101,5 +101,48 @@ public class Settings {
             return false;
         }
     }
+
+    /**
+     * This class will represent a special person you may designate. This functionality is named after Moo.
+     */
+    public class MooOptions{
+        public String nickname = "";
+        public String mooID = "";
+        public boolean enableMooMode;
+        public String mooGreeting = "";
+
+        public String getMooGreeting() {
+            return mooGreeting;
+        }
+
+        public void setMooGreeting(String mooGreeting) {
+            this.mooGreeting = mooGreeting;
+        }
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
+
+        public String getMooID() {
+            return mooID;
+        }
+
+        public void setMooID(String mooID) {
+            this.mooID = mooID;
+        }
+
+        public boolean isEnableMooMode() {
+            return enableMooMode;
+        }
+
+        public void setEnableMooMode(boolean enableMooMode) {
+            this.enableMooMode = enableMooMode;
+        }
+    }
+
 
 }

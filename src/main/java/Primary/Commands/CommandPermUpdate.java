@@ -1,4 +1,7 @@
 package Primary.Commands;
+import Primary.CommandHandler;
+import Primary.Pikaboyny;
+import Primary.Settings;
 import discord4j.common.util.Snowflake;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.object.entity.Message;
@@ -14,13 +17,8 @@ import java.util.Objects;
  */
 public class CommandPermUpdate {
 
-    public static void memberAddToTextchannel(Message msg, GatewayDiscordClient client){
-        if (Primary.CommandHandler.mooCheck(msg)){
-            memberAddToTextchannel(msg, client, true);
-        }
-        else{
-            memberAddToTextchannel(msg, client, false);
-        }
+    public static void memberAddToTextchannel(Message msg, GatewayDiscordClient client, Settings.MooOptions mooConfig){
+        memberAddToTextchannel(msg, client, CommandHandler.mooCheck(msg), mooConfig);
     }
     public static void memberAddToVoicechannel(Message msg, GatewayDiscordClient client, boolean isMoo){
 
@@ -34,7 +32,7 @@ public class CommandPermUpdate {
      * @param client
      * @param isMoo
      */
-    public static void memberAddToTextchannel(Message msg, GatewayDiscordClient client, boolean isMoo) {
+    public static void memberAddToTextchannel(Message msg, GatewayDiscordClient client, boolean isMoo, Settings.MooOptions mooOptions) {
         MessageChannel curchn = msg.getChannel().block();
         assert curchn != null;
         if (!Primary.CommandHandler.checkGuildOwnership(msg) && !Primary.CommandHandler.checkAdminStatus(msg)){
@@ -42,8 +40,8 @@ public class CommandPermUpdate {
             curchn.createMessage("You're not allowed to invoke this command.").subscribe();
             msg.getRestMessage().createReaction("\u274e").subscribe();
         }
-        else if (isMoo){
-            curchn.createMessage("Hewwo moousey, you're not allowed to invoke this command. You must use your servfur account.~").subscribe();
+        else if (isMoo && mooOptions.isEnableMooMode()){
+            curchn.createMessage(mooOptions.getMooGreeting().concat(" ").concat(mooOptions.getNickname()) + ", you're not allowed to invoke this command.").subscribe();
             msg.getRestMessage().createReaction("\u274e").subscribe();
         }
         else {
@@ -102,9 +100,7 @@ public class CommandPermUpdate {
                 channelargs[i-2] = msgargs[i];
             }
         }
-        for (String str : channelargs){
-            System.out.println(str);
-        }
+
         ArrayList<Snowflake> snowflakelist = new ArrayList<Snowflake>();
         for (String snowflakes : channelargs){
             snowflakelist.add(Snowflake.of(snowflakes.substring(2,snowflakes.length()-1)));
