@@ -1,5 +1,7 @@
 package Primary.Commands;
 
+import Primary.Pikaboyny;
+import Primary.Settings;
 import discord4j.core.DiscordClient;
 import discord4j.core.object.entity.Message;
 ;import java.util.concurrent.CompletableFuture;
@@ -9,13 +11,13 @@ import discord4j.core.object.entity.Message;
  */
 public class CommandShutdown {
 
-    public static boolean execute(Message msg, Primary.CommandHandler cmdhandle){
+    public static boolean execute(Message msg, Primary.CommandHandler cmdhandle, Settings configuration){
         if (msg.getAuthor().isPresent()){
             if (cmdhandle.checkBotOwnership(msg.getAuthor().get().getId().asString())){
-                //For future async functionality below \/
-                //CompletableFuture<Message> something = msg.getChannel().block().createMessage("Roger, roger. Shutting down...").toFuture();
-                msg.getChannel().block().createMessage("Roger, roger. Shutting down...").block();
-                msg.getClient().logout().block();
+                msg.getChannel().block().createMessage("Roger, roger. Shutting down...").subscribe();
+                msg.getClient().logout().subscribe();
+                Settings.saveSettings(Pikaboyny.gson, configuration);
+
             }
 
         }

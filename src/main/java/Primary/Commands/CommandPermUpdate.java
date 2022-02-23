@@ -1,8 +1,12 @@
 package Primary.Commands;
+import Primary.CommandHandler;
+import Primary.Pikaboyny;
+import Primary.Settings;
 import discord4j.common.util.Snowflake;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.channel.Channel;
+import discord4j.core.object.entity.channel.MessageChannel;
 import discord4j.core.object.entity.channel.VoiceChannel;
 import discord4j.discordjson.json.PermissionsEditRequest;
 import java.util.ArrayList;
@@ -13,15 +17,32 @@ import java.util.Objects;
  */
 public class CommandPermUpdate {
 
-    public static void memberAddToTextchannel(Message msg, GatewayDiscordClient client){
-        memberAddToTextchannel(msg, client, false);
+    public static void memberAddToTextchannel(Message msg, GatewayDiscordClient client, Settings.MooOptions mooConfig){
+        memberAddToTextchannel(msg, client, CommandHandler.mooCheck(msg), mooConfig);
     }
     public static void memberAddToVoicechannel(Message msg, GatewayDiscordClient client, boolean isMoo){
 
     }
-    public static void memberAddToTextchannel(Message msg, GatewayDiscordClient client, boolean isMoo) {
+
+    /**
+     * This function takes the current message and applies the designated permissions while denying any channel NOT
+     * specified otherwise. This will change the type of responses given based on whether it is authorized as an admin
+     * or if it is authorized as guild owner. Also has a different type of response if the person is Moo.
+     * @param msg
+     * @param client
+     * @param isMoo
+     */
+    public static void memberAddToTextchannel(Message msg, GatewayDiscordClient client, boolean isMoo, Settings.MooOptions mooOptions) {
+        MessageChannel curchn = msg.getChannel().block();
+        assert curchn != null;
         if (!Primary.CommandHandler.checkGuildOwnership(msg) && !Primary.CommandHandler.checkAdminStatus(msg)){
-            Objects.requireNonNull(msg.getChannel().block()).createMessage("You're not allowed to invoke this command. Get lost you fuckin twat.").block();
+
+            curchn.createMessage("You're not allowed to invoke this command.").subscribe();
+            msg.getRestMessage().createReaction("\u274e").subscribe();
+        }
+        else if (isMoo && mooOptions.isEnableMooMode()){
+            curchn.createMessage(mooOptions.getMooGreeting().concat(" ").concat(mooOptions.getNickname()) + ", you're not allowed to invoke this command.").subscribe();
+            msg.getRestMessage().createReaction("\u274e").subscribe();
         }
         else {
             //Currently reads all user mentions of a message.
@@ -34,13 +55,13 @@ public class CommandPermUpdate {
                         try {
                             if (tc.getType().equals(Channel.Type.GUILD_TEXT)){
                                 //Get rest channel, edit permissions setting the user,
-                                tc.getRestChannel().editChannelPermissions(user.getId(), PermissionsEditRequest.builder().allow(3148800).deny(0).type(1).build(), "Testing Something").block();
+                                tc.getRestChannel().editChannelPermissions(user.getId(), PermissionsEditRequest.builder().allow(3148800).deny(0).type(1).build(), String.format("Invoked by %s", msg.getAuthor().get().getUsername())).subscribe();
                             }
 
                         } catch (IndexOutOfBoundsException e){
                             e.printStackTrace();
                             System.out.println("Continuing execution as if nothing happened...");
-                            Objects.requireNonNull(msg.getChannel().block()).createMessage("Perm Update Failed. Check system log...").block();
+                            curchn.createMessage("Perm Update Failed. Check system log...").subscribe();
                         }
                     }
                     //This is the case where the Channels ARE NOT the ones listed.
@@ -48,10 +69,11 @@ public class CommandPermUpdate {
                         Channel chn = msg.getClient().getChannelById(Snowflake.of(channel)).block();
                         assert chn != null;
                         if (chn.getType().equals(Channel.Type.GUILD_TEXT)){
-                            chn.getRestChannel().editChannelPermissions(user.getId(), PermissionsEditRequest.builder().deny(3148800).allow(0).type(1).build(), "Invoked by ".concat(msg.getAuthor().get().getUsername())).block();
+                            chn.getRestChannel().editChannelPermissions(user.getId(), PermissionsEditRequest.builder().deny(3148800).allow(0).type(1).build(), "Invoked by ".concat(msg.getAuthor().get().getUsername())).subscribe();
                         }
                     }
                 });
+                msg.getRestMessage().createReaction("✅").subscribe();
 
             });
 
@@ -78,9 +100,7 @@ public class CommandPermUpdate {
                 channelargs[i-2] = msgargs[i];
             }
         }
-        for (String str : channelargs){
-            System.out.println(str);
-        }
+
         ArrayList<Snowflake> snowflakelist = new ArrayList<Snowflake>();
         for (String snowflakes : channelargs){
             snowflakelist.add(Snowflake.of(snowflakes.substring(2,snowflakes.length()-1)));

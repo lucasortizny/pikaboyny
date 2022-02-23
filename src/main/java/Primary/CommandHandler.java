@@ -15,8 +15,8 @@ public class CommandHandler extends Pikaboyny{
      * Default Assignment
      */
     public CommandHandler(){
-        this.prefix = super.predeterminedprefix;
-        this.ownerID = "100903082652602368";
+        this.prefix = Pikaboyny.configuration.getPredeterminedprefix();
+        this.ownerID = Pikaboyny.configuration.getOwnerID();
 
     }
 
@@ -75,7 +75,7 @@ public class CommandHandler extends Pikaboyny{
             return (Objects.requireNonNull(message.getGuild().block()).getOwnerId().equals(message.getAuthor().get().getId()));
         }
         catch (NullPointerException e){
-            Objects.requireNonNull(message.getChannel().block()).createMessage("Guild ownership check failed. Check your code.").block();
+            Objects.requireNonNull(message.getChannel().block()).createMessage("Guild ownership check failed. Check your code.").subscribe();
 
 
         }
@@ -84,14 +84,14 @@ public class CommandHandler extends Pikaboyny{
 
     public static boolean checkAdminStatus(Message message){
         try {
-            return ((message.getAuthorAsMember().block().getRoles().blockFirst().getPermissions().contains(Permission.ADMINISTRATOR)));
+            return ((Objects.requireNonNull(message.getAuthorAsMember().block().getRoles().blockFirst()).getPermissions().contains(Permission.ADMINISTRATOR)));
         } catch (NullPointerException e){
             return false;
         }
         //Catch All for any undesired intentions.
         catch (Exception e){
             e.printStackTrace();
-            Objects.requireNonNull(message.getChannel().block()).createMessage("Guild admin check failed. Check your code.").block();
+            Objects.requireNonNull(message.getChannel().block()).createMessage("Guild admin check failed. Check your code.").subscribe();
 
         }
 
