@@ -1,0 +1,3 @@
+# pikaboyny
+Discord Bot for modifying server properties and other future commands.
+Read Me is work in progres....
