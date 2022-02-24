@@ -1,12 +1,17 @@
 package Primary;
 
-import Primary.Datatypes.VoiceChannelDT;
+import Primary.Datatypes.ChannelDT;
 import com.google.gson.Gson;
+import discord4j.common.util.Snowflake;
+import discord4j.core.DiscordClient;
+import discord4j.core.GatewayDiscordClient;
+import discord4j.core.object.entity.Message;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * This is going to be the Primary Settings Configuration
@@ -17,10 +22,47 @@ public class Settings {
     protected String ownerID = "";
     protected String predeterminedprefix = "!";
     protected boolean developmentEnvironment = false;
-    protected HashMap<String, VoiceChannelDT> vchm;
+    protected HashMap<String, HashMap<String, ChannelDT>> vchm = new HashMap<>();
     protected MooOptions mooOptions = new MooOptions();
     protected static final String FILEPATH = "./settings.json";
 
+    public boolean fetchChannels (GatewayDiscordClient client, Message msg, Gson gson){
+        try {
+
+            String guildID = Objects.requireNonNull(msg.getGuild().block()).getId().asString();
+            if (!vchm.containsKey(guildID)){
+                vchm.put(guildID, new HashMap<>());
+            }
+            client.getGuildChannels(Snowflake.of(guildID)).subscribe(guildChannel -> {
+                if (vchm.get(guildID).containsKey(guildChannel.getId().asString())){
+                    //Skip if the text channels are already existent.
+                }
+                else{
+                    vchm.get(guildID).put(guildChannel.getId().asString(), new ChannelDT(guildChannel.getType().name(), guildChannel.getName(), guildChannel.getId().asString()));
+
+                }
+            });
+            Settings.saveSettings(gson, this);
+            return true;
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+    public boolean clearAndFetch( Message msg, Gson gson){
+        try {
+            this.vchm.clear();
+            if (this.fetchChannels(msg.getClient(), msg, gson)){
+                return true;
+            }
+            return false;
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
     public String getPredeterminedprefix() {
         return predeterminedprefix;
     }

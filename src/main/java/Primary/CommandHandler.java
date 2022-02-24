@@ -25,11 +25,7 @@ public class CommandHandler extends Pikaboyny{
      * Assignment of default settings with customized prefix.
      * @param prefix
      */
-    public CommandHandler (String prefix){
-        this.prefix = prefix; //Assign Prefix
-        this.ownerID = "100903082652602368"; //Default Owner is Lucas aka Me
 
-    }
 
     /**
      * Custom Assignment of Owner and Subsequent Prefixes
@@ -61,8 +57,8 @@ public class CommandHandler extends Pikaboyny{
      * @param snowflake
      * @return
      */
-    public boolean checkBotOwnership(String snowflake){
-        return Objects.equals(snowflake, this.ownerID);
+    public static boolean checkBotOwnership(String snowflake){
+        return Objects.equals(snowflake, configuration.ownerID);
     }
 
     /**
@@ -81,7 +77,34 @@ public class CommandHandler extends Pikaboyny{
         }
         return false;
     }
-
+    public static boolean giveCheck (Message msg){
+        try {
+            msg.getRestMessage().createReaction("✅").subscribe();
+            return true;
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static boolean giveEx (Message msg){
+        try {
+            msg.getRestMessage().createReaction("\u274e").subscribe();
+            return true;
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static boolean revokeInvokation(Message msg){
+        try{
+            Objects.requireNonNull(msg.getChannel().block()).createMessage("You're not allowed to invoke this command").subscribe();
+            giveEx(msg);
+            return true;
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
     public static boolean checkAdminStatus(Message message){
         try {
             return ((Objects.requireNonNull(message.getAuthorAsMember().block().getRoles().blockFirst()).getPermissions().contains(Permission.ADMINISTRATOR)));
