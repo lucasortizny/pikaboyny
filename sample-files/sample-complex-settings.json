@@ -1,0 +1,72 @@
+{
+  "token": "xxxxxxxxxxxxxxxxxx",
+  "devToken": "xxxxxxxxxxxxxxxxxx",
+  "ownerID": "xxxxxxxxxxxxxxxxxx",
+  "predeterminedprefix": "!",
+  "developmentEnvironment": true,
+  "vchm": {
+    "900493579196178443": {
+      "xxxxxxxxxxxxxxxxxx": {
+        "channeltype": "GUILD_TEXT",
+        "name": "4",
+        "id": "xxxxxxxxxxxxxxxxxx"
+      },
+      "xxxxxxxxxxxxxxxxxx": {
+        "channeltype": "GUILD_TEXT",
+        "name": "general",
+        "id": "xxxxxxxxxxxxxxxxxx"
+      },
+      "xxxxxxxxxxxxxxxxxx": {
+        "channeltype": "GUILD_CATEGORY",
+        "name": "Voice Channels",
+        "id": "xxxxxxxxxxxxxxxxxx"
+      },
+      "xxxxxxxxxxxxxxxxxx": {
+        "channeltype": "GUILD_CATEGORY",
+        "name": "Text Channels",
+        "id": "xxxxxxxxxxxxxxxxxx"
+      },
+      "xxxxxxxxxxxxxxxxxx": {
+        "channeltype": "GUILD_TEXT",
+        "name": "documentation",
+        "id": "xxxxxxxxxxxxxxxxxx"
+      },
+      "xxxxxxxxxxxxxxxxxx": {
+        "channeltype": "GUILD_TEXT",
+        "name": "xxx",
+        "id": "xxxxxxxxxxxxxxxxxx"
+      },
+      "xxxxxxxxxxxxxxxxxx": {
+        "channeltype": "GUILD_TEXT",
+        "name": "xxx",
+        "id": "xxxxxxxxxxxxxxxxxx"
+      },
+      "xxxxxxxxxxxxxxxxxx": {
+        "channeltype": "GUILD_VOICE",
+        "name": "xxx",
+        "id": "xxxxxxxxxxxxxxxxxx"
+      },
+      "xxxxxxxxxxxxxxxxxx": {
+        "channeltype": "GUILD_TEXT",
+        "name": "xxx",
+        "id": "xxxxxxxxxxxxxxxxxxx"
+      },
+      "xxxxxxxxxxxxxxxxxx": {
+        "channeltype": "GUILD_TEXT",
+        "name": "xxx",
+        "id": "xxxxxxxxxxxxxxxxxx"
+      },
+      "xxxxxxxxxxxxxxxxxx": {
+        "channeltype": "GUILD_VOICE",
+        "name": "xxx",
+        "id": "xxxxxxxxxxxxxxxxxx"
+      }
+    }
+  },
+  "mooOptions": {
+    "nickname": "xxx",
+    "mooID": "xxx",
+    "enableMooMode": true,
+    "mooGreeting": "xxx"
+  }
+}
