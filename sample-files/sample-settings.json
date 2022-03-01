@@ -1,0 +1,13 @@
+{
+  "token": "",
+  "devToken": "",
+  "ownerID": "",
+  "predeterminedprefix": "!",
+  "developmentEnvironment": false,
+  "mooOptions": {
+    "nickname": "",
+    "mooID": "",
+    "enableMooMode": true,
+    "mooGreeting": ""
+  }
+}
