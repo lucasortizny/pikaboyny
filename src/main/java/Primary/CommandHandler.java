@@ -19,7 +19,10 @@ public class CommandHandler extends Pikaboyny{
         this.ownerID = Pikaboyny.configuration.getOwnerID();
 
     }
-
+    public CommandHandler(Settings configuration){
+        this.prefix = configuration.getPredeterminedprefix();
+        this.ownerID = configuration.getOwnerID();
+    }
 
     /**
      * Assignment of default settings with customized prefix.
