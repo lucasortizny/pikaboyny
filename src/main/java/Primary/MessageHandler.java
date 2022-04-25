@@ -18,9 +18,10 @@ public class MessageHandler extends Pikaboyny{
             try {
                 switch(messagesplit[0].substring(1)){
                     case "shutdown" -> CommandShutdown.execute(msg, Pikaboyny.handlecmd, configuration);
-                    case "tallow" -> CommandPermUpdate.memberAddToTextchannel(msg, msg.getClient(), configuration.mooOptions);
-                    case "registerchannels" -> CommandFetch.fetchChannels(configuration, gson, msg);
-                    case "cf" -> CommandFetch.clearAndFetch(configuration, gson, msg);
+                    case "allow" -> CommandPermUpdate.memberAddToChannel(msg, msg.getClient(), configuration.mooOptions);
+                    case "deny" -> CommandPermUpdate.memberDenyToChannel(msg, msg.getClient(), configuration.mooOptions);
+                    case "fc" -> CommandFetch.fetchChannels(configuration, gson, msg);
+                    case "cnf" -> CommandFetch.clearAndFetch(configuration, gson, msg);
 
                 }}catch(Exception e){
                 Objects.requireNonNull(msg.getChannel().block()).createMessage("Method invocation failed. Please refer to the console for more information.").block();

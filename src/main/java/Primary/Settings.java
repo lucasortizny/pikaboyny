@@ -25,6 +25,13 @@ public class Settings {
     protected HashMap<String, HashMap<String, ChannelDT>> vchm = new HashMap<>();
     protected MooOptions mooOptions = new MooOptions();
     protected static final String FILEPATH = "./settings.json";
+    protected HashMap<String, String> commandlist = new HashMap<>() {{
+        put("shutdown", "Shutdown the bot using this command. Only available to the bot owner defined in settings.json.");
+        put("tallow", "Allow a person access to the specified text channels. This command will implicitly deny the permissions" +
+                " of channels that have not been specified");
+        put("fc", "Register the channels  by obtaining them and writing to the Settings configuration.");
+        put("cnf", "Clear and fetch the channels, giving it a nice fresh start in the Settings configuration.");
+    }}; //List of commands and their descriptions.
 
     public boolean fetchChannels (GatewayDiscordClient client, Message msg, Gson gson){
         try {

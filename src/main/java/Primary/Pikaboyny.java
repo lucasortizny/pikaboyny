@@ -33,7 +33,7 @@ public class Pikaboyny{
 
         GatewayDiscordClient gateway = client.login().block();
         handlemsg = new MessageHandler();
-        handlecmd = new CommandHandler(configuration.getPredeterminedprefix());
+        handlecmd = new CommandHandler(configuration.getPredeterminedprefix(), configuration.getOwnerID());
 
 
         gateway.on(MessageCreateEvent.class).subscribe(event -> {
